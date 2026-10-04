@@ -1,0 +1,55 @@
+# Exclude VS Code workspace files
+*.code-workspace
+
+# Editors / IDEs
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Build output
+build/
+dist/
+out/
+*.o
+*.obj
+*.elf
+*.bin
+*.hex
+
+# PlatformIO / Arduino
+.pio/
+.pioenvs/
+.piolibdeps/
