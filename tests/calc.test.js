@@ -11,8 +11,10 @@ test('parseTime', () => {
   assert.equal(t('23:59'), 1439);
   assert.equal(t('0730'), 450);
   assert.equal(t('730'), 450);
+  assert.equal(t('700'), 420);
   assert.equal(t('7.30'), 450);
   assert.equal(t('18'), 1080);
+  assert.equal(t('1800'), 1080);
   assert.equal(t('7:3'), null);
   assert.equal(t('24:00'), null);
   assert.equal(t('12:60'), null);

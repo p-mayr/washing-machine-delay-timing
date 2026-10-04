@@ -11,10 +11,15 @@
 
   const pad = (n) => String(n).padStart(2, '0');
 
-  /** 24h "HH:MM" (also "H:MM", "HHMM", "HMM", "HH") -> minutes since midnight, or null if invalid. */
+  /** 24h "HH:MM", "HMM", "HHMM", "HH", or "H" -> minutes since midnight, or null if invalid. */
   function parseTime(str) {
-    const s = String(str ?? '').trim().replace('.', ':');
-    const m = /^(\d{1,2}):?(\d{2})$/.exec(s) || /^(\d{1,2})()$/.exec(s);
+    let s = String(str ?? '').trim().replace('.', ':');
+    let m = /^(\d{1,2}):?(\d{2})$/.exec(s) || /^(\d{1,2})()$/.exec(s);
+    // Also handle "700" → "07:00", "1230" → "12:30"
+    if (!m && /^\d{3,4}$/.test(s)) {
+      const padded = s.padStart(4, '0');
+      m = [padded, padded.slice(0, 2), padded.slice(2)];
+    }
     if (!m) return null;
     const h = Number(m[1]);
     const min = Number(m[2]);

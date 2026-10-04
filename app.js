@@ -4,23 +4,23 @@
 
   const { parseTime, formatClock, formatDuration, calculate } = window.Calc;
 
-  // Program presets from the machine manual ("Tabelle Waschprogramme"), durations in minutes
+  // Program presets from the machine manual, sorted by temperature, name, then duration
   const PRESETS = [
-    { name: 'Baumwolle 90 °C', minutes: 187 },
-    { name: 'Baumwolle mit Vorwäsche 60 °C', minutes: 165 },
-    { name: 'Baumwolle Öko 60 °C', minutes: 215 },
     { name: 'ECO 20 °C', minutes: 95 },
-    { name: 'Pflegeleicht 40 °C', minutes: 110 },
-    { name: 'Wolle 30 °C', minutes: 43 },
-    { name: 'Spülen', minutes: 42 },
-    { name: 'Anti-Allergie 60 °C', minutes: 226 },
-    { name: 'Schleudern', minutes: 17 },
+    { name: 'Express 15 Min. 30 °C', minutes: 15 },
     { name: 'Handwäsche 30 °C', minutes: 90 },
     { name: 'Sport 30 °C', minutes: 80 },
     { name: 'Textilmischung 30 °C', minutes: 81 },
+    { name: 'Wolle 30 °C', minutes: 43 },
     { name: 'Hemden/Blusen 40 °C', minutes: 112 },
+    { name: 'Pflegeleicht 40 °C', minutes: 110 },
     { name: 'Täglich 60 Min. 40 °C', minutes: 60 },
-    { name: 'Express 15 Min. 30 °C', minutes: 15 },
+    { name: 'Anti-Allergie 60 °C', minutes: 226 },
+    { name: 'Baumwolle mit Vorwäsche 60 °C', minutes: 165 },
+    { name: 'Baumwolle Öko 60 °C', minutes: 215 },
+    { name: 'Baumwolle 90 °C', minutes: 187 },
+    { name: 'Schleudern', minutes: 17 },
+    { name: 'Spülen', minutes: 42 },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -51,7 +51,14 @@
     for (const p of PRESETS) {
       const opt = document.createElement('option');
       opt.value = String(p.minutes);
-      opt.textContent = `${p.name} (${p.minutes} min)`;
+      // Extract temperature from name (e.g. "30 °C" from "Handwäsche 30 °C") or use "—"
+      const tempMatch = p.name.match(/(\d+)\s*°C/);
+      const temp = tempMatch ? `${tempMatch[1]}°C` : '—';
+      // Remove temperature from name for display
+      const nameWithoutTemp = p.name.replace(/\s*\d+\s*°C\s*$/, '').trim();
+      opt.textContent = `${temp} · ${nameWithoutTemp} (${p.minutes} min)`;
+      // Make name bold by using HTML (works in modern browsers)
+      opt.innerHTML = `${temp} · <b>${nameWithoutTemp}</b> (${p.minutes} min)`;
       els.preset.insertBefore(opt, els.preset.lastElementChild);
     }
     els.preset.hidden = false;
