@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Washing Machine Delay Timer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Delay Timer Helper</h1>
+    <p class="subtitle">When should the washing machine start, so it finishes on time?</p>
+
+    <form id="form" autocomplete="off" novalidate>
+      <div class="field">
+        <label for="now">Current time</label>
+        <div class="row">
+          <input type="text" id="now" class="time" inputmode="numeric" maxlength="5" placeholder="HH:MM" required>
+          <button type="button" id="now-reset" class="secondary" title="Reset to current time">Now</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="prog-h">Program duration</label>
+        <select id="preset" hidden>
+          <option value="">Custom…</option>
+        </select>
+        <div class="row duration">
+          <input type="number" id="prog-h" min="0" max="23" step="1" inputmode="numeric" placeholder="0" aria-label="Hours">
+          <span>h</span>
+          <input type="number" id="prog-m" min="0" max="59" step="1" inputmode="numeric" placeholder="00" aria-label="Minutes">
+          <span>min</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="target">Target finish time</label>
+        <input type="text" id="target" class="time" inputmode="numeric" maxlength="5" placeholder="HH:MM" required>
+      </div>
+    </form>
+
+    <section id="result" aria-live="polite"></section>
+  </main>
+
+  <script src="calc.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
