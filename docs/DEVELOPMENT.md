@@ -19,10 +19,11 @@
 
 ### Phases
 **Phase 1 – MVP**
-- [ ] `index.html` with form: current time (default now, editable), program time (preset dropdown + custom input), target finish time
-- [ ] `app.js` with calculation function + live update on input
-- [ ] Output: recommended delay setting and resulting actual finish time
-- [ ] Basic responsive `style.css` (mobile first – used next to the machine)
+- [x] `index.html` with form: current time (default now, editable), program time (preset dropdown + custom input), target finish time
+- [x] `app.js` with calculation function + live update on input
+- [x] Output: recommended delay setting and resulting actual finish time
+- [x] Basic responsive `style.css` (mobile first – used next to the machine)
+- [x] Program presets from machine manual
 
 **Phase 2 – Usability**
 - [ ] Save last used settings in `localStorage`
@@ -30,7 +31,7 @@
 
 **Phase 3 – Polish**
 - [ ] Editable program presets list
-- [ ] Unit tests for calculation logic (e.g. Node test runner or Vitest)
+- [x] Unit tests for calculation logic (Node test runner)
 - [ ] PWA (offline, add to home screen)
 - [ ] Optional: German/English language toggle
 
@@ -51,5 +52,5 @@ tests/
   - Development: test locally (open `index.html` or `python3 -m http.server`)
   - Release: make repo public → enable GitHub Pages (Settings → Pages → `main` / root)
 
-### Open questions
-- Which program presets/durations should be defaults? (to be defined later)
+- Program presets: taken from the machine manual ("Tabelle Waschprogramme"), defined in `PRESETS` in `app.js`
+  - No extra load-dependent presets (e.g. "Täglich" with 2 kg) – use custom duration instead

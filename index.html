@@ -2,19 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f5f7fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f141b" media="(prefers-color-scheme: dark)">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Washing Machine Delay Timer</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Line icons (stroke uses currentColor) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-washer" viewBox="0 0 24 24"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><path d="M4 7h16"/><circle cx="7.5" cy="4.8" r=".6"/><circle cx="10" cy="4.8" r=".6"/><circle cx="12" cy="14" r="4.5"/><path d="M9 14.5c1-1 2 1 3 0s2-1 3 0"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M10 2h4M19 6l1.5-1.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></symbol>
+  </svg>
+
   <main>
-    <h1>Delay Timer Helper</h1>
+    <header class="brand">
+      <img src="icon.svg" alt="" width="48" height="48">
+      <h1>Delay Timer Helper</h1>
+    </header>
     <p class="subtitle">When should the washing machine start, so it finishes on time?</p>
 
     <form id="form" autocomplete="off" novalidate>
       <div class="field">
-        <label for="now">Current time</label>
+        <label for="now"><svg class="icon"><use href="#i-clock"/></svg>Current time</label>
         <div class="row">
           <input type="text" id="now" class="time" inputmode="numeric" maxlength="5" placeholder="HH:MM" required>
           <button type="button" id="now-reset" class="secondary" title="Reset to current time">Now</button>
@@ -22,20 +41,18 @@
       </div>
 
       <div class="field">
-        <label for="prog-h">Program duration</label>
+        <label for="prog"><svg class="icon"><use href="#i-washer"/></svg>Program duration</label>
         <select id="preset" hidden>
           <option value="">Custom…</option>
         </select>
         <div class="row duration">
-          <input type="number" id="prog-h" min="0" max="23" step="1" inputmode="numeric" placeholder="0" aria-label="Hours">
-          <span>h</span>
-          <input type="number" id="prog-m" min="0" max="59" step="1" inputmode="numeric" placeholder="00" aria-label="Minutes">
+          <input type="number" id="prog" min="1" max="1439" step="1" inputmode="numeric" placeholder="e.g. 187" aria-label="Minutes">
           <span>min</span>
         </div>
       </div>
 
       <div class="field">
-        <label for="target">Target finish time</label>
+        <label for="target"><svg class="icon"><use href="#i-flag"/></svg>Target finish time</label>
         <input type="text" id="target" class="time" inputmode="numeric" maxlength="5" placeholder="HH:MM" required>
       </div>
     </form>

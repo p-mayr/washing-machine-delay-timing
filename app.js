@@ -4,16 +4,31 @@
 
   const { parseTime, formatClock, formatDuration, calculate } = window.Calc;
 
-  // Program presets (defaults to be defined later). Example: { name: 'Cotton 60°', minutes: 215 }
-  const PRESETS = [];
+  // Program presets from the machine manual ("Tabelle Waschprogramme"), durations in minutes
+  const PRESETS = [
+    { name: 'Baumwolle 90 °C', minutes: 187 },
+    { name: 'Baumwolle mit Vorwäsche 60 °C', minutes: 165 },
+    { name: 'Baumwolle Öko 60 °C', minutes: 215 },
+    { name: 'ECO 20 °C', minutes: 95 },
+    { name: 'Pflegeleicht 40 °C', minutes: 110 },
+    { name: 'Wolle 30 °C', minutes: 43 },
+    { name: 'Spülen', minutes: 42 },
+    { name: 'Anti-Allergie 60 °C', minutes: 226 },
+    { name: 'Schleudern', minutes: 17 },
+    { name: 'Handwäsche 30 °C', minutes: 90 },
+    { name: 'Sport 30 °C', minutes: 80 },
+    { name: 'Textilmischung 30 °C', minutes: 81 },
+    { name: 'Hemden/Blusen 40 °C', minutes: 112 },
+    { name: 'Täglich 60 Min. 40 °C', minutes: 60 },
+    { name: 'Express 15 Min. 30 °C', minutes: 15 },
+  ];
 
   const $ = (id) => document.getElementById(id);
   const els = {
     now: $('now'),
     nowReset: $('now-reset'),
     preset: $('preset'),
-    progH: $('prog-h'),
-    progM: $('prog-m'),
+    prog: $('prog'),
     target: $('target'),
     result: $('result'),
   };
@@ -36,26 +51,20 @@
     for (const p of PRESETS) {
       const opt = document.createElement('option');
       opt.value = String(p.minutes);
-      opt.textContent = `${p.name} (${formatDuration(p.minutes)} h)`;
+      opt.textContent = `${p.name} (${p.minutes} min)`;
       els.preset.insertBefore(opt, els.preset.lastElementChild);
     }
     els.preset.hidden = false;
     els.preset.addEventListener('change', () => {
       const min = Number(els.preset.value);
-      if (min > 0) {
-        els.progH.value = Math.floor(min / 60);
-        els.progM.value = min % 60;
-      }
+      if (min > 0) els.prog.value = min;
       update();
     });
   }
 
   function programMinutes() {
-    const h = Number(els.progH.value || 0);
-    const m = Number(els.progM.value || 0);
-    if (!Number.isFinite(h) || !Number.isFinite(m) || h < 0 || m < 0) return null;
-    const total = Math.round(h * 60 + m);
-    return total > 0 ? total : null;
+    const m = Math.round(Number(els.prog.value));
+    return Number.isFinite(m) && m > 0 ? m : null;
   }
 
   // --- Rendering -----------------------------------------------------------
@@ -74,9 +83,10 @@
   function optionHtml(o, primary) {
     return `
       <div class="option ${primary ? 'primary' : ''}">
-        <div class="delay"><span class="value">${o.delayHours}</span> h</div>
+        <div class="delay"><svg class="icon"><use href="#i-timer"/></svg><span class="value">${o.delayHours}</span> h</div>
         <div class="details">
-          Start ${clock(o.start)} · Finish ${clock(o.finish)}<br>
+          <span class="nowrap"><svg class="icon sm"><use href="#i-play"/></svg>Start ${clock(o.start)}</span>
+          <span class="nowrap"><svg class="icon sm"><use href="#i-check"/></svg>Finish ${clock(o.finish)}</span><br>
           <span class="dev ${o.deviation > 0 ? 'late' : ''}">${deviationText(o.deviation)}</span>
         </div>
       </div>`;
@@ -121,9 +131,7 @@
   // --- Events --------------------------------------------------------------
   els.now.addEventListener('input', () => { nowEdited = true; update(); });
   els.nowReset.addEventListener('click', () => { nowEdited = false; syncNow(); update(); });
-  for (const el of [els.progH, els.progM]) {
-    el.addEventListener('input', () => { els.preset.value = ''; update(); });
-  }
+  els.prog.addEventListener('input', () => { els.preset.value = ''; update(); });
   els.target.addEventListener('input', update);
 
   // Normalize 24h time input to "HH:MM" when leaving the field
